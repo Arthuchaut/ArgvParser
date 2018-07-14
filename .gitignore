@@ -1,0 +1,6 @@
+tests/__pycache__
+argvparser/__pycache__
+setup.py
+build
+dist
+argvparser.egg-info
