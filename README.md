@@ -2,15 +2,22 @@
 
 ArgvParser allows to format an argument vector in a structure easier to read and use for command line applications.
 
-### Installation
+## Installation
 
-    pip install argvparser
+    python -m pip install argvparser
     
-### Importation
+## Importation
 
     import argvparser
+
+## Using
+
+    import argvparser
+    import sys
+
+    args = argvparser.argvparser.parse(sys.argv)
     
-### Documentation
+## Documentation
 
 **ArgvParser.parse**
 
@@ -28,7 +35,7 @@ Formate arguments vector to a dictionnary
 
 *Parsing with several concatenated options*
 
-    >>> self.parse(['app.py', 'ls', '-lar', '42', '--float', '3.14'])
+    >>> argvparser.argvparser.parse(['app.py', 'ls', '-lar', '42', '--float', '3.14'])
     {
         'app': 'app',
         'command': 'ls',
@@ -42,7 +49,7 @@ Formate arguments vector to a dictionnary
 
 *Parsing without command specified*
 
-    >>> self.parse(['app.py', '--print', 'My message I want to print', '-i'])
+    >>> argvparser.argvparser.parse(['app.py', '--print', 'My message I want to print', '-i'])
     {
         'app': 'app',
         'command': None,
@@ -54,7 +61,7 @@ Formate arguments vector to a dictionnary
     
 *Parsing with duplicated options*
     
-    >>> self.parse(['app.py', '-v', '/var/www', '-i', '-v', '/var/bin/bash'])
+    >>> argvparser.argvparser.parse(['app.py', '-v', '/var/www', '-i', '-v', '/var/bin/bash'])
     {
         'app': 'app',
         'command': None,
@@ -79,7 +86,7 @@ Retrieves multiple argument (like -li) and reconstruct it to a correct format
 
 :Example:
 
-    >>> self.parse_multi_options(['app.py', '-liar', '--test'])
+    >>> argvparser.argvparser.parse_multi_options(['app.py', '-liar', '--test'])
     ['app.py', '-l', '-i', '-a', '-r', '--test']
 
 **ArgvParser.is_option**
@@ -94,13 +101,13 @@ Check if the argument in parameter is an option or not
 
 :Example:
 
-    >>> self.is_option('-t')
+    >>> argvparser.argvparser.is_option('-t')
     True
 
-    >>> self.is_option('--test')
+    >>> argvparser.argvparser.is_option('--test')
     True
 
-    >>> self.is_option('test')
+    >>> argvparser.argvparser.is_option('test')
     False
 
 **ArgvParser.parse_type**
@@ -117,11 +124,11 @@ Convert the passed argument into the appropriate type
 
 :Example:
 
-    >>> self.parse_type('test')
+    >>> argvparser.argvparser.parse_type('test')
     'test'
 
-    >>> self.parse_type('42')
+    >>> argvparser.argvparser.parse_type('42')
     42
 
-    >>> self.parse_type('3.14')
+    >>> argvparser.argvparser.parse_type('3.14')
     3.14

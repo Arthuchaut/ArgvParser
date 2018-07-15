@@ -1,4 +1,4 @@
-from argvparser.argvparser import ArgvParser
+import argvparser
 import tests.argvparser_tests as unit
 import pprint
 
@@ -14,10 +14,10 @@ def main():
     }
 
     docs = {
-        'parse': ArgvParser.parse.__doc__,
-        'parse_multi_options': ArgvParser.parse_multi_options.__doc__,
-        'is_option': ArgvParser.is_option.__doc__,
-        'parse_type': ArgvParser.parse_type.__doc__
+        'parse': argvparser.argvparser.parse.__doc__,
+        'parse_multi_options': argvparser.argvparser.parse_multi_options.__doc__,
+        'is_option': argvparser.argvparser.is_option.__doc__,
+        'parse_type': argvparser.argvparser.parse_type.__doc__
     }
 
     for method, doc in docs.items():

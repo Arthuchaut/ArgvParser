@@ -6,10 +6,8 @@ class ArgvParser:
     Its structure is easier to read and use for command line applications
     """
 
-    def __init__(self, argv):
-        self.args = self.parse(argv)
-
-    def parse(self, argv):
+    @classmethod
+    def parse(cls, argv):
         """
         Formate arguments vector to a dictionnary
 
@@ -23,7 +21,7 @@ class ArgvParser:
 
         :Example:
 
-        >>> self.parse(['app.py', 'ls', '-lar', '42', '--float', '3.14'])
+        >>> cls.parse(['app.py', 'ls', '-lar', '42', '--float', '3.14'])
         {
             'app': 'app', 
             'command': 'ls', 
@@ -35,7 +33,7 @@ class ArgvParser:
             }
         }
 
-        >>> self.parse(['app.py', '--print', 'My message I want to print', '-i'])
+        >>> cls.parse(['app.py', '--print', 'My message I want to print', '-i'])
         {
             'app': 'app', 
             'command': None, 
@@ -45,7 +43,7 @@ class ArgvParser:
             }
         }
 
-        >>> self.parse(['app.py', '-v', '/var/www', '-i', '-v', '/var/bin/bash'])
+        >>> cls.parse(['app.py', '-v', '/var/www', '-i', '-v', '/var/bin/bash'])
         {
             'app': 'app', 
             'command': None, 
@@ -64,32 +62,33 @@ class ArgvParser:
         if re.search(r'\.(\w)+', argv[0], re.IGNORECASE):
             args['app'] = re.sub(r'\.(\w)+', '', argv.pop(0), re.IGNORECASE)
 
-        if not self.is_option(argv[0]):
+        if not cls.is_option(argv[0]):
             args['command'] = argv[0]
 
-        argv = self.parse_multi_options(argv)
+        argv = cls.parse_multi_options(argv)
 
         for i, arg in enumerate(argv):
             j = (i + 1) if (i + 1) < len(argv) else i
 
-            if self.is_option(arg) and not self.is_option(argv[j]):
+            if cls.is_option(arg) and not cls.is_option(argv[j]):
                 if arg in args['options']:
                     if isinstance(args['options'][arg], list):
-                        args['options'][arg].append(self.parse_type(argv[j]))
+                        args['options'][arg].append(cls.parse_type(argv[j]))
                     else:
                         tmp = args['options'][arg]
-                        args['options'][arg] = list((self.parse_type(argv[j]), tmp))
+                        args['options'][arg] = list((cls.parse_type(argv[j]), tmp))
                 else:
-                    args['options'][arg] = self.parse_type(argv[j])
-            elif self.is_option(arg):
+                    args['options'][arg] = cls.parse_type(argv[j])
+            elif cls.is_option(arg):
                 args['options'][arg] = None
 
-            if i < (len(argv) - 1) and not self.is_option(arg) and not self.is_option(argv[j]):
+            if i < (len(argv) - 1) and not cls.is_option(arg) and not cls.is_option(argv[j]):
                 raise Exception('Argument \'%s\' is assigned to any option.' % argv[j])  
 
         return args
 
-    def parse_multi_options(self, argv):
+    @classmethod
+    def parse_multi_options(cls, argv):
         """
         Retrieves multiple argument (like -li) and reconstruct it to a correct format
 
@@ -101,7 +100,7 @@ class ArgvParser:
 
         :Example:
 
-        >>> self.parse_multi_options(['app.py', '-liar', '--test'])
+        >>> cls.parse_multi_options(['app.py', '-liar', '--test'])
         ['app.py', '-l', '-i', '-a', '-r', '--test']
         """
 
@@ -116,7 +115,8 @@ class ArgvParser:
         
         return new_argv
 
-    def is_option(self, arg):
+    @classmethod
+    def is_option(cls, arg):
         """
         Check if the argument in parameter is an option or not
 
@@ -128,13 +128,13 @@ class ArgvParser:
 
         :Example:
 
-        >>> self.is_option('-t')
+        >>> cls.is_option('-t')
         True
 
-        >>> self.is_option('--test')
+        >>> cls.is_option('--test')
         True
 
-        >>> self.is_option('test')
+        >>> cls.is_option('test')
         False
         """
 
@@ -143,7 +143,8 @@ class ArgvParser:
 
         return False
 
-    def parse_type(self, arg):
+    @classmethod
+    def parse_type(cls, arg):
         """
         Convert the passed argument into the appropriate type
 
@@ -157,13 +158,13 @@ class ArgvParser:
 
         :Example:
 
-        >>> self.parse_type('test')
+        >>> cls.parse_type('test')
         'test'
 
-        >>> self.parse_type('42')
+        >>> cls.parse_type('42')
         42
 
-        >>> self.parse_type('3.14')
+        >>> cls.parse_type('3.14')
         3.14
         """
 

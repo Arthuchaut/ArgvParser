@@ -1,7 +1,7 @@
-from argvparser.argvparser import ArgvParser
+import argvparser
 
 def test_argvparser(argv = ['app.py', 'ls', '-la']):
     try:
-        return ArgvParser(argv).args
+        return argvparser.argvparser.parse(argv)
     except Exception as e:
         return e
